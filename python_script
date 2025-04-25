@@ -1,0 +1,25 @@
+from scapy.all import *
+
+def packet_handler(packet):
+    if packet.haslayer(IP):  # Check if the packet has an IP layer
+        ip_src = packet[IP].src  # Get source IP
+        ip_dst = packet[IP].dst  # Get destination IP
+        print(f"Packet captured: {ip_src} -> {ip_dst}")
+        
+        if packet.haslayer(TCP):  # Check if it's a TCP packet
+            tcp_sport = packet[TCP].sport  # Source port
+            tcp_dport = packet[TCP].dport  # Destination port
+            print(f"TCP Packet: {tcp_sport} -> {tcp_dport}")
+        
+        elif packet.haslayer(UDP):  # Check if it's a UDP packet
+            udp_sport = packet[UDP].sport  # Source port
+            udp_dport = packet[UDP].dport  # Destination port
+            print(f"UDP Packet: {udp_sport} -> {udp_dport}")
+
+def start_sniffing():
+    print("Starting network sniffing...")
+    sniff(prn=packet_handler, store=0)  # Capture packets and apply the packet_handler to each
+
+if __name__ == "__main__":
+    start_sniffing()
+# CodeAlpha-Network_Sniffer_in_Python
